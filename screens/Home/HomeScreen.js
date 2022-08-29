@@ -19,29 +19,34 @@ import {
 } from "./HomeStyles";
 import { WeatherIconSet } from "../../components/weatherIcons";
 import { DeviceLocation } from "../../state management/context/locationContext";
-import getFormattedWeatherData, { getformatForecastWeather, getFormattedCurrentWeather, getFormattedWeather, getWeatherData } from "../../infrastructure/utilities/weatherServices/weatherServices";
+import getFormattedWeatherData, {
+  getformatForecastWeather,
+  getFormattedCurrentWeather,
+  getFormattedWeather,
+  getWeatherData,
+} from "../../infrastructure/utilities/weatherServices/weatherServices";
 import { Store } from "../../state management/context/contextStore";
 import { ThemeHandler } from "../../infrastructure/utilities/functions";
 import axios from "axios";
 
 export const HomeHeader = () => {
-  const { theme, setTheme,deviceWeather } = Store();
+  const { theme, setTheme, deviceWeather } = Store();
   const Icons = [
     {
       icon: <Ionicons name="sunny" color={colors.lightgrey} size={16} />,
       state: theme ? false : false,
       themeValue: true,
-      key:1,
+      key: 1,
     },
     {
       icon: <Ionicons name="ios-moon" color={colors.white} size={16} />,
       state: theme ? false : false,
       themeValue: false,
-      key:2
+      key: 2,
     },
   ];
 
-  const IconHandler = (Icon,state, themeValue,key) => {
+  const IconHandler = (Icon, state, themeValue, key) => {
     ThemeHandler(themeValue, setTheme, theme);
     // console.log('yes')
   };
@@ -70,25 +75,22 @@ export const HomeHeader = () => {
              {deviceWeather?.timezone}
             </Text> */}
 
-          
-            
             <Text
-            color={theme ? "black" : colors.white}
-            fontSize={"23px"}
-            style={{ paddingLeft: 8 }}
-          >
-           {deviceWeather.name},
-          </Text>
-          
+              color={theme ? "black" : colors.white}
+              fontSize={"23px"}
+              style={{ paddingLeft: 8 }}
+            >
+              {deviceWeather.name},
+            </Text>
+
             <Text
-            color={theme ? "silver" : colors.black.inactive}
-            fontSize={"15px"}
-            style={{ paddingLeft: 8 }}
-          >
-           {deviceWeather.country}
-          </Text>
-               
-          
+              color={theme ? "silver" : colors.black.inactive}
+              fontSize={"15px"}
+              style={{ paddingLeft: 8 }}
+            >
+              {deviceWeather.country}
+            </Text>
+
             {/* <Text
               color={theme ? "silver" : colors.black.inactive}
               fontSize={"15px"}
@@ -105,9 +107,9 @@ export const HomeHeader = () => {
               <IconBox
                 key={Icon.key}
                 onPress={() => {
-                  IconHandler(Icon, Icon.state, Icon.themeValue,Icon.key);
+                  IconHandler(Icon, Icon.state, Icon.themeValue, Icon.key);
                 }}
-              bg={Icon.state ?  colors.primary_color : '' }
+                bg={Icon.state ? colors.primary_color : ""}
               >
                 {Icon.icon}
               </IconBox>
@@ -120,27 +122,27 @@ export const HomeHeader = () => {
 };
 
 const HomeScreen = () => {
-  const [Lat,Long] = DeviceLocation();
-  const {deviceWeather,setDeviceWeather,theme} = Store();
+  const [Lat, Long] = DeviceLocation();
+  const { deviceWeather, setDeviceWeather, theme } = Store();
 
-const FetchData = async ()=>{
-const localData = await getWeatherData("https://api.openweathermap.org/data/2.5/weather?q=abuja&appid=82a2c2050e4518854b40feade796e845&units=metric")
-  const{lat,lon} = getFormattedCurrentWeather(localData)
+  const FetchData = async () => {
+    const localData = await getWeatherData(
+      "https://api.openweathermap.org/data/2.5/weather?q=abuja&appid=82a2c2050e4518854b40feade796e845&units=metric"
+    );
+    const { lat, lon } = getFormattedCurrentWeather(localData);
 
-  // console.log("Local Data",localData)
- await getformatForecastWeather(lat,lon,localData).then((data)=>{
-  setDeviceWeather(data)
-  console.log("Device weather: ",deviceWeather)
- })
+    // console.log("Local Data",localData)
+    await getformatForecastWeather(lat, lon, localData).then((data) => {
+      setDeviceWeather(data);
+      console.log("Device weather: ", deviceWeather);
+    });
+  };
 
-
-}
-
-  useEffect(()=>{
+  useEffect(() => {
     FetchData();
-  },[])
-  
-let description=deviceWeather?.current?.weather[0]?.description
+  }, []);
+
+  let description = deviceWeather?.current?.weather[0]?.description;
   return (
     <>
       <Layout>
@@ -160,7 +162,7 @@ let description=deviceWeather?.current?.weather[0]?.description
           {WeatherIconSet(description, 180, {
             position: "absolute",
             zIndex: 1,
-            top:'30%',
+            top: "30%",
           })}
         </ImageContainer>
 
