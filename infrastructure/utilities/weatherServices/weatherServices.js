@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+
 
 // WEATHER SERVICES 
 const BASE_URL='https://api.openweathermap.org/data/2.5';
@@ -202,17 +202,14 @@ const formatForecastWeather = (data,localData) => {
         let { timezone,current,hourly } = data;
         let {
           name ,
-          dt,
+         dt,
         sys: { country},
-        pressure,
-        wind_speed,
-        dew_point,
-        humidity
+  
       
       } = localData
         hourly = hourly.slice(0,3).map((d) => {
           return {
-            // title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
+            date: FormatWeatherTime(d.dt,"time-only"),
             temp: d.temp,
             icon: d.weather[0].icon,
                 description:d.weather[0].description,
@@ -221,7 +218,7 @@ const formatForecastWeather = (data,localData) => {
         });
       
 
-        return { timezone, hourly,current,name,dt,country,pressure,wind_speed,dew_point,humidity};
+        return { timezone, hourly,current,name,date:FormatWeatherTime(dt),country};
 
       };
 export const getformatForecastWeather=(lat,lon,localData)=>{
@@ -230,8 +227,24 @@ return fetch(`${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,a
 .then((data)=>formatForecastWeather(data,localData))
 
 }
-const formatToLocalTime = (
-    secs,
-    zone,
-    format = "cccc, dd LLL yyyy' | Local time: 'hh:mm a"
-  ) => DateTime.fromObject(secs).setZone(zone).toFormat(format);
+
+  export const WindSpeedConverter=(speed)=>{
+    let x = speed * 3600;
+    let speed_in_kmhr = x/1000;
+    return Math.floor(speed_in_kmhr.toString());
+  }
+
+  export const FormatWeatherTime =(timeFormat,type)=>{
+    let newDate = new Date(timeFormat*1000)
+    
+    if (type==="time-only"){
+      return newDate.getHours()
+    }
+
+    else if(type==="date"){
+      return newDate.toDateString()
+    }
+    else{
+      return newDate.toDateString()
+    }
+  }

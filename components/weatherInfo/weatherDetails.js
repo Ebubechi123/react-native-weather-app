@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 import { ThunderStormIcon } from "../../assets/icons/3DIcons";
 import { colors } from "../../infrastructure/theme/colors";
+import { WindSpeedConverter } from "../../infrastructure/utilities/weatherServices/weatherServices";
 import { Store } from "../../state management/context/contextStore";
 import { Text } from "../Typography/typography";
 import { WeatherIconSet } from "../weatherIcons";
@@ -44,16 +45,24 @@ const DetailView = styled.View`
 const IconView = styled.View`
   position: absolute;
   z-index: 99;
-  top: 32px;
+  top: 30%;
 `;
 const WeatherDetails = () => {
   const {theme,deviceWeather} = Store();
-  // console.log("Device weather from weather details screen: ",deviceWeather)
+  console.log("Device weather from weather details screen: ",deviceWeather)
+
+    let Precipitation = deviceWeather.current.dew_point;
+    let Humidity = deviceWeather.current.humidity;
+    let Wind_Speed = deviceWeather.current.wind_speed;
+    let Pressure = deviceWeather.current.pressure;
+    let Weather_Description = deviceWeather?.current?.weather[0]?.description;
   return (
     <>
       <WeatherDetailsView>
         <IconView>
-        {WeatherIconSet('thunderstorm',52)}
+        {WeatherIconSet(Weather_Description.toString(),52)
+       
+        }
         </IconView>
         <LeftCol>
           <DetailView style={{ marginBottom: 12 }}>
@@ -71,7 +80,7 @@ const WeatherDetails = () => {
               color={theme ? colors.black.inactive :colors.white}
               fontSize={"16px"}
             >
-              30%
+              {Precipitation}%
             </Text>
           </DetailView>
           <DetailView>
@@ -89,7 +98,7 @@ const WeatherDetails = () => {
               color={theme ? colors.black.inactive :colors.white}
               fontSize={"16px"}
             >
-              {deviceWeather?.humidity}%
+              {Humidity}%
             </Text>
           </DetailView>
         </LeftCol>
@@ -110,7 +119,7 @@ const WeatherDetails = () => {
            color={theme ? colors.black.inactive :colors.white}
               fontSize={"16px"}
             >
-              8 km/h
+              {WindSpeedConverter(Wind_Speed)} km/h
             </Text>
           </DetailView>
           <DetailView>
@@ -128,7 +137,7 @@ const WeatherDetails = () => {
               color={theme ? colors.black.inactive :colors.white}
               fontSize={"16px"}
             >
-              840hPa
+              {Pressure}hPa
             </Text>
           </DetailView>
         </RightCol>

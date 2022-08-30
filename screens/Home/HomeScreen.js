@@ -20,6 +20,7 @@ import {
 import { WeatherIconSet } from "../../components/weatherIcons";
 import { DeviceLocation } from "../../state management/context/locationContext";
 import getFormattedWeatherData, {
+  FormatWeatherTime,
   getformatForecastWeather,
   getFormattedCurrentWeather,
   getFormattedWeather,
@@ -48,7 +49,6 @@ export const HomeHeader = () => {
 
   const IconHandler = (Icon, state, themeValue, key) => {
     ThemeHandler(themeValue, setTheme, theme);
-    // console.log('yes')
   };
   return (
     <>
@@ -59,7 +59,8 @@ export const HomeHeader = () => {
             fontSize={"15px"}
             fontWeight={"800"}
           >
-            24, Aug 2022
+          {/* {FormatWeatherTime(deviceWeather.dt)} */}
+          {deviceWeather.date}
           </Text>
 
           <LocationBox>
@@ -67,13 +68,6 @@ export const HomeHeader = () => {
               color={theme ? colors.black.dark_mode : colors.white}
               size={14}
             />
-            {/* <Text
-              color={theme ? colors.black.dark_mode : colors.white}
-              style={{ paddingLeft: 8 }}
-              fontSize={"17px"}
-            >
-             {deviceWeather?.timezone}
-            </Text> */}
 
             <Text
               color={theme ? "black" : colors.white}
@@ -90,14 +84,6 @@ export const HomeHeader = () => {
             >
               {deviceWeather.country}
             </Text>
-
-            {/* <Text
-              color={theme ? "silver" : colors.black.inactive}
-              fontSize={"15px"}
-              style={{ paddingLeft: 8 }}
-            >
-              Nigeria
-            </Text> */}
           </LocationBox>
         </Col1>
 
@@ -124,17 +110,17 @@ export const HomeHeader = () => {
 const HomeScreen = () => {
   const [Lat, Long] = DeviceLocation();
   const { deviceWeather, setDeviceWeather, theme } = Store();
-
+  // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
   const FetchData = async () => {
     const localData = await getWeatherData(
-      "https://api.openweathermap.org/data/2.5/weather?q=abuja&appid=82a2c2050e4518854b40feade796e845&units=metric"
+      `https://api.openweathermap.org/data/2.5/weather?lat=${Lat}&lon=${Long}&appid=82a2c2050e4518854b40feade796e845&units=metric`
     );
     const { lat, lon } = getFormattedCurrentWeather(localData);
 
-    // console.log("Local Data",localData)
+    console.log("Local Data",localData)
     await getformatForecastWeather(lat, lon, localData).then((data) => {
       setDeviceWeather(data);
-      console.log("Device weather: ", deviceWeather);
+      console.log(deviceWeather)
     });
   };
 

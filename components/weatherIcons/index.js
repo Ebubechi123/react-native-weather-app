@@ -13,7 +13,7 @@ export const WeatherIconSet =(icon,iconSize,style)=>{
             return <LightRainIcon height={iconSize} width={iconSize} style={style}/>;
          case 'extreme rain':
             return <ExtremeRainIcon height={iconSize} width={iconSize} style={style}/>;
-         case 'few clouds':case"scattered clouds: 25-50%":case"broken clouds":case"overcast clouds":
+         case 'few clouds':case"scattered clouds":case"broken clouds":case"overcast clouds":
             return <FewCloudsIcon height={iconSize} width={iconSize} style={style}/>;
     
          case 'heavy intensity rain':

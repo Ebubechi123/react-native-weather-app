@@ -32,14 +32,14 @@ const HourlyData = () => {
         <HourContainer>
             {/* Returns Hourly Report if there's a successful feedback from the weather state */}
             {deviceWeather && 
-               deviceWeather?.hourly?.map(({description,temp})=>(
+               deviceWeather?.hourly?.map(({description,temp,date})=>(
                 <HourCard key={Math.random()} >
                    <View style={{elevation:1}} >
                    {WeatherIconSet(description.toString(),45)}
                    </View>
-                   <Text fontSize={'13px'} color={theme ? colors.black.inactive : colors.white} style={{margin:12}} >{"1:00pm"}</Text>
+                   <Text fontSize={'14px'} color={theme ? colors.black.inactive : colors.white} style={{margin:12}} >{date<12 ? date+"am" : date <12  &&date+"pm"}</Text>
                    <Text fontSize={'20px'} color={theme ? colors.black.inactive : colors.white} fontWeight={800} style={{margin:4}}>{Math.floor(temp)}</Text>
-                   <DegreeSybmol size={'10px'} top={"70%"}  bg={theme ? colors.primary_color : 'white'} right={'40%'} >
+                   <DegreeSybmol size={'10px'} top={"101px"}  bg={theme ? colors.primary_color : 'white'} right={'40%'} >
                    <InnerDegreeCircle size={'5px'} bg={theme ? 'white' : 'black'} />
                    </DegreeSybmol>
                 </HourCard>
